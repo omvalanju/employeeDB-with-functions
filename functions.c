@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include "functions.h"
 #include "fh_struct.h"
 
@@ -9,13 +10,8 @@ int count(void)
     int count_number;
 
     FILE* count; 
-    
     count = fopen("count.txt","r");
-
-    fscanf(count,"%d",&count_number);
-
-    //printf("%d",count_number);
-     
+    fscanf(count,"%d",&count_number);     
     fclose(count);
   
     return count_number;
@@ -23,39 +19,65 @@ int count(void)
 
 int add(void)
 {
-    int count_number,number_length;
-    count_number = count();
-    FILE *pointer;
+    int count_number,number_length,str_length,i,salary_length;
 
+    count_number = count();
+
+    FILE *pointer;
     pointer = fopen("data.txt","a");
 
     printf("Enter Name:");
     scanf("%s",e[count_number].name);
+    str_length = strlen(e[count_number].name);
+  
+    for (i=0;i <= str_length;i++)
+    {
+        if (isdigit((e[count_number].name)[i]));
+        {
+            printf("Invalid Name\n");
+            exit(1);
+        }
+    }
+    
 
     printf("Enter Number:");
     scanf("%d",&e[count_number].number);
+   // number_length = strlen(e[count_number].number);   
+  
+    /*for (i=0;i <= number_length;i++)
+    {
+        if (!isdigit((e[count_number].number)[i]));
+        {
+            printf("Invalid Number\n");
+            exit(1);
+        }
 
+    } 
    
-    
-   /* if(e[count_number].number > 9999999999 || e[count_number].number < 9000000000)
+    if ((e[count_number].number)[i] > 999999999 || (e[count_number].number)[i] < 900000000);
     {
-        printf("Invalid Mobile Number");
-    }
-   
-    else
-    {
-         continue;
-    }*/   
+        printf("Invalid Name\n");
+        exit(1);
+    }*/
 
     printf("Enter Salary:");
     scanf("%d",&e[count_number].salary);
 
-    //name = fopen("name.txt","a");
-    //fprintf(name,"%s\n",e.name);
-    //fclose(name);
+    //salary_length = strlen(e[count_number].salary);
+  
+    /*for (i=0;i <= salary_length;i++)
+    {
+        if (!isdigit((e[count_number].salary)[i]));
+        {
+            printf("Invalid Salary\n");
+            exit(1);
+        }
+     
+    }*/
 
     fwrite(&e[count_number],sizeof(struct employee),1,pointer);
     fclose(pointer);
+
     count_number = count_number + 1;
 
     FILE* count_write;
