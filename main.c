@@ -9,17 +9,17 @@ int main()
    int op;
     
     
-   enum op{Add=1, Remove=2, Update=3, Exit=4};
+   enum op{Add=1, Remove=2, Update=3, Exit=5, Read=4};
     
 
    for (;;)
    {
-       printf("Select Operation:\n1.Add\n2.Remove\n3.Update\n4.Exit\nEnter Operation number:");
+       printf("Select Operation:\n1.Add\n2.Remove\n3.Update\n4.Display Data\n5.Exit\nEnter Operation number:");
 
        scanf("%d",&op);
        printf("**************************\n");
 
-       if (op>4)
+       if (op>5)
        {
            printf("Invalid Operation");
            continue;
@@ -33,11 +33,16 @@ int main()
                    break;
 
                case Remove:
-                   //rmv();
+                   rmv();
+                   read();
                    break;
 
                case Update:
                    modify();
+                   read();
+                   break;
+
+               case Read:
                    read();
                    break;
                  

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "functions.h"
 #include "fh_struct.h"
 
@@ -22,7 +23,7 @@ int count(void)
 
 int add(void)
 {
-    int count_number;
+    int count_number,number_length;
     count_number = count();
     FILE *pointer;
 
@@ -33,6 +34,18 @@ int add(void)
 
     printf("Enter Number:");
     scanf("%d",&e[count_number].number);
+
+   
+    
+   /* if(e[count_number].number > 9999999999 || e[count_number].number < 9000000000)
+    {
+        printf("Invalid Mobile Number");
+    }
+   
+    else
+    {
+         continue;
+    }*/   
 
     printf("Enter Salary:");
     scanf("%d",&e[count_number].salary);
@@ -78,6 +91,38 @@ int modify(void){
     fwrite(&e[x],sizeof(struct employee),1,pointer);
     fclose(pointer);
 }
+
+
+int rmv(void)
+{
+    int seek,x,count_number,i;
+    FILE *pointer;
+    count_number = count();
+    pointer = fopen("data.txt","r+");
+
+    printf("Enter Element Number\n");
+    scanf("%d",&x);
+
+    seek = (x-1) * 108;
+
+    fseek(pointer,seek,SEEK_SET);
+    
+    for(i=x-1;i<=count_number;i++)
+    {
+        strcpy(e[i].name,e[i+1].name);
+        e[i].number=e[i+1].number;
+        e[i].salary=e[i+1].salary;
+        fwrite(&e[i],sizeof(struct employee),1,pointer);
+    }
+    fclose(pointer);
+    count_number = count_number - 1;
+
+    FILE* count_write;
+    count_write = fopen("count.txt","w");
+    fprintf(count_write,"%d",count_number);
+    fclose(count_write);
+}
+
 
 
 int read(void)
