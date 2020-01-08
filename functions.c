@@ -31,6 +31,7 @@ int intcheck(int num)
 }
 
 
+
 int countdig(long int num)
 {
     int count = 0;
