@@ -3,7 +3,7 @@
 
 struct employee {
     char name[100];
-    int number;
+    long int number;
     int salary;
 }e[10];
 
