@@ -29,17 +29,17 @@ int main()
            {
                case Add:
                    add();
-                   read();
+                   //read();
                    break;
 
                case Remove:
                    rmv();
-                   read();
+                   //read();
                    break;
 
                case Update:
                    modify();
-                   read();
+                   //read();
                    break;
 
                case Read:

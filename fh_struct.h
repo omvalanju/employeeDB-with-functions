@@ -4,7 +4,7 @@
 struct employee {
     char name[100];
     long int number;
-    int salary;
+    long int salary;
 }e[10];
 
 /*FILE* count = fopen(count.txt,"r");

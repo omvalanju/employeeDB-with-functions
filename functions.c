@@ -6,11 +6,18 @@
 #include "fh_struct.h"
 
 
-int intcheck(int num)
+void empty_stdin(void) {
+    int c = getchar();
+
+    while (c != '\n' && c != EOF)
+        c = getchar();
+}
+
+/*int intcheck(long int num)
 {
     int i,str_length;
     char buffer[50];
-    sprintf(buffer,"%d",num);
+    sprintf(buffer,"%li",num);
     int x = 0;
 
     str_length = strlen(buffer);
@@ -28,7 +35,35 @@ int intcheck(int num)
         }
     }
     return x;
+}*/
+
+int intcheck(int num)
+{
+    int i,str_length;
+    char buffer[50];
+    sprintf(buffer,"%d",num);
+    //int x = 0;
+
+    str_length = strlen(buffer);
+
+
+    for (i=0;i<=str_length-1;i++)
+    {
+        if (isdigit(buffer[i]))
+        {
+           // printf("\n%d\n",x);
+            continue;
+        }
+        else
+        {
+            //x = 1;
+            //printf("%d\n",x);
+            return 1;
+        }
+    }
+    return 0;
 }
+
 
 
 
@@ -65,6 +100,7 @@ int count(void)
 int add(void)
 {
     int str_length,number_length,i,count_number,countd,check;
+    int x = 0;
     count_number = count();
     FILE *pointer;
 
@@ -81,31 +117,89 @@ int add(void)
         if (isdigit(e[count_number].name[i]))
         {
             printf("Invalid Name.Enter again\n");
+            empty_stdin();
             goto name;
         }
     }
+    
 
-    number:
+
+    while (x == 0)
+    {
         printf("Enter Number:");
         scanf("%li",&e[count_number].number);
-    
-    countd = countdig(e[count_number].number);
-    printf("%d",countd); 
-    if (countd = 10)
-    {
-        printf("valid Number\n");
-        goto number;
-    }
-    
-    check = intcheck(e[count_number].number);
-    
-    if (check != 10)
-    {
-        printf("Invalid Number\n");
-        goto number;
-    }
+       // printf("Entered number: %li",e[count_number].number);
+        check = intcheck(e[count_number].number);
+       // printf("check-done\n");
   
-    salary:
+        if (check != 0)
+        {
+            printf("Invalid Number\n");
+            empty_stdin();
+            continue;
+        }     
+        
+        countd = countdig(e[count_number].number);
+ 
+        if (countd != 10)
+        {
+            printf("Invalid Number\n");
+            empty_stdin();
+            continue;
+        }
+  
+        else 
+        {
+            break;
+        }
+    }
+    
+    while (x == 0)
+    {
+        empty_stdin();
+        printf("Enter Salary:");
+        scanf("%li",&e[count_number].salary);
+        printf("Entered number: %li\n",e[count_number].salary);
+        check = intcheck(e[count_number].salary);
+       // printf("check-done\n");
+        printf("%d\n",check);        
+
+        if (check != 0)
+        {
+            printf("Invalid Salary\n");
+            //empty_stdin();
+            continue;
+        }
+
+        else
+        {   
+            break;
+        }
+    }
+
+
+
+  
+    /*while (x == 0)
+    {
+        printf("Enter Salary:");
+        scanf("%d",&e[count_number].salary);
+        check = intcheck(e[count_number].salary);
+
+        if(check != 0)
+        {
+            printf("Invalid Salary\n");
+            empty_stdin();
+            continue;
+        }
+ 
+        else
+        {
+            x = 1;
+        }
+    }*/
+  
+    /*salary:
         printf("Enter Salary:");
         scanf("%d",&e[count_number].salary);
 
@@ -117,7 +211,7 @@ int add(void)
          printf("Invalid Salary\n");
          goto salary;
 
-    }
+    }*/
 
     fwrite(&e[count_number],sizeof(struct employee),1,pointer);
     fclose(pointer);
@@ -127,6 +221,7 @@ int add(void)
     count_write = fopen("count.txt","w");
     fprintf(count_write,"%d",count_number);
     fclose(count_write);
+    empty_stdin();
 
 }
 
@@ -146,11 +241,26 @@ int modify(void){
     printf("Enter Name:");
     scanf("%s",e[x].name);
 
+   /* name:
+        printf("Enter Name:");
+        scanf("%s",e[count_number].name);
+        str_length = strlen(e[count_number].name);
+       // printf("%d",str_length);
+
+    for (i=0;i<=str_length;i++)
+    {
+        if (isdigit(e[count_number].name[i]))
+        {
+            printf("Invalid Name.Enter again\n");
+            goto name;
+        }
+    }*/
+
     printf("Enter Number:");
     scanf("%li",&e[x].number);
 
     printf("Enter Salary:");
-    scanf("%d",&e[x].salary);
+    scanf("%li",&e[x].salary);
 
 
     fwrite(&e[x],sizeof(struct employee),1,pointer);
@@ -200,8 +310,57 @@ int read(void)
     {
         printf("****************************\n");
         fread (&e[x], sizeof(struct employee), 1, pointer);
-        printf ("Name %d = %s\nNumber %d = %li\nSalary %d = %d\n",x+1,e[x].name,x+1,e[x].number,x+1,e[x].salary);
+        printf ("Name %d = %s\nNumber %d = %li\nSalary %d = %li\n",x+1,e[x].name,x+1,e[x].number,x+1,e[x].salary);
     }
 
 }
+
+/*int main()
+{
+   int op;
+
+
+   enum op{Add=1, Remove=2, Update=3, Exit=5, Read=4};
+
+
+   for (;;)
+   {
+       printf("Select Operation:\n1.Add\n2.Remove\n3.Update\n4.Display Data\n5.Exit\nEnter Operation number:");
+
+       scanf("%d",&op);
+       printf("**************************\n");
+
+       if (op>5)
+       {
+           printf("Invalid Operation");
+           continue;
+       }
+       else
+           switch(op)
+           {
+               case Add:
+                   add();
+                   //read();
+                   break;
+
+               case Remove:
+                   rmv();
+                   //read();
+                   break;
+
+               case Update:
+                   modify();
+                   //read();
+                   break;
+
+               case Read:
+                   read();
+                   break;
+
+               case Exit:
+                   exit(0);
+            }
+
+}
+}*/
 
